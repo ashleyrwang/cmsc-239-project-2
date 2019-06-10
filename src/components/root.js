@@ -1,6 +1,8 @@
 import React from 'react';
-import {csv} from 'd3-fetch';
+import {csv, json} from 'd3-fetch';
 import ExampleChart from './example-chart';
+import IncomeScatter from './income-scatterplot';
+
 
 const longBlock = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
@@ -20,10 +22,10 @@ class RootComponent extends React.Component {
   }
 
   componentWillMount() {
-    csv('data/sample-data.csv')
-      .then(data => {
+    Promise.all([json('data/cta_data_avg.json')])
+      .then(dataList => {
         this.setState({
-          data,
+          data: dataList[0],
           loading: false
         });
       });
@@ -38,9 +40,8 @@ class RootComponent extends React.Component {
       <div className="relative">
         <h1> Hello Explainable!</h1>
         <div>{`The example data was loaded! There are ${data.length} rows`}</div>
-        <ExampleChart data={data}/>
+        <IncomeScatter data={data}/>
         <div>{longBlock}</div>
-        <ExampleChart data={data}/>
         <div>{longBlock}</div>
       </div>
     );
