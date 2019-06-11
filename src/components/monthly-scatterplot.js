@@ -7,11 +7,22 @@ import {
   VerticalGridLines,
   HorizontalGridLines,
   MarkSeries,
+  DiscreteColorLegend,
   ChartLabel,
   Hint
 } from 'react-vis';
 
-export default class IncomeScatter extends Component {
+function groupBy(data, key) {
+  return data.reduce((acc, row) => {
+    if (!acc[row[key]]) {
+      acc[row[key]] = [];
+    }
+    acc[row[key]].push(row);
+    return acc;
+  }, {});
+}
+
+export default class MonthlyScatter extends Component {
   constructor() {
     super();
     this.state = {
@@ -21,13 +32,14 @@ export default class IncomeScatter extends Component {
 
   render() {
     const {value} = this.state;
-    const {data} = this.props;
-    const formattedData = data.map(elem => {
-      return {x: elem.med_income, y: Math.round(elem.avg_rides), station: elem.station};
+    const {monData, annData} = this.props.data;
+    console.log(monData);
+    const formattedData = monData.map(elem => {
+      return {x: new Date(elem.date), y: elem.total_rides, dateString: elem.date};
     });
     return (
       <div>
-        <XYPlot width={500} height={500} margin={{left: 80, right: 10, top: 10, bottom: 80}}>
+        <XYPlot width={500} height={500} margin={{left: 80, right: 10, top: 10, bottom: 80}} xType="time">
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
@@ -63,15 +75,14 @@ export default class IncomeScatter extends Component {
             size={7}
             data={formattedData}
             getColor={(val) => {
-              return (val.x === value.x && val.y === value.y) ?
+              return (val.dateString === value.dateString && val.y === value.y) ?
                 '#E74C3C' : '#1A5276';
             }}
           />
           {value !== false &&
             <Hint value={value}>
               <div >
-                <h3>{value.station}</h3>
-                <p>Income: ${value.x}</p>
+                <p>{value.dateString}</p>
                 <p>Riders: {value.y}</p>
               </div>
             </Hint>

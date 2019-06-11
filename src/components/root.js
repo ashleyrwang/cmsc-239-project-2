@@ -2,7 +2,7 @@ import React from 'react';
 import {csv, json} from 'd3-fetch';
 import ExampleChart from './example-chart';
 import IncomeScatter from './income-scatterplot';
-
+import MonthlyScatter from './monthly-scatterplot';
 
 const longBlock = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
@@ -16,32 +16,40 @@ class RootComponent extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: null,
+      generalData: null,
+      monthlyData: null,
+      annualData: null,
       loading: true
     };
   }
 
   componentWillMount() {
-    Promise.all([json('data/cta_data_avg.json')])
+    Promise.all([json('data/cta_data_avg.json'),
+      json('data/cta_monthly_totals.json'), json('data/cta_annual_totals.json')])
       .then(dataList => {
         this.setState({
-          data: dataList[0],
+          generalData: dataList[0],
+          monthlyData: dataList[1],
+          annualData: dataList[2],
           loading: false
         });
       });
   }
 
   render() {
-    const {loading, data} = this.state;
+    const {loading, generalData, monthlyData, annualData} = this.state;
+    console.log(monthlyData);
     if (loading) {
       return <h1>LOADING</h1>;
     }
     return (
       <div className="relative">
         <h1> Hello Explainable!</h1>
-        <div>{`The example data was loaded! There are ${data.length} rows`}</div>
-        <IncomeScatter data={data}/>
+        <div>{`The example data was loaded! There are ${generalData.length} rows`}</div>
+        <IncomeScatter data={generalData}/>
         <div>{longBlock}</div>
+        <MonthlyScatter data={{annData: annualData, monData: monthlyData}}/>
+
         <div>{longBlock}</div>
       </div>
     );
