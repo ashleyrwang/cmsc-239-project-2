@@ -7,7 +7,8 @@ import {
   VerticalGridLines,
   HorizontalGridLines,
   MarkSeries,
-  RadialChart,
+  DiscreteColorLegend,
+  ChartLabel,
   Hint
 } from 'react-vis';
 
@@ -33,15 +34,35 @@ export default class IncomeScatter extends Component {
     const {value, hoverPointId} = this.state;
     const {data} = this.props;
     const formattedData = data.map(elem => {
-      return {x: elem.med_income, y: Math.round(elem.avg_rides)};
+      return {x: elem.med_income, y: Math.round(elem.avg_rides), station: elem.station};
     });
     return (
       <div>
-        <XYPlot width={500} height={500} margin={{left: 50, right: 10, top: 10, bottom: 40}}>
+        <XYPlot width={500} height={500} margin={{left: 80, right: 10, top: 10, bottom: 80}}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
           <YAxis />
+          <ChartLabel
+            text="MEDIAN HOUSEHOLD INCOME (2016)"
+            includeMargin={false}
+            xPercent={0.01}
+            yPercent={1.13}
+            style={{
+              stroke: 'black'
+            }}
+          />
+          <ChartLabel
+            text="AVERAGE DAILY RIDERSHIP (2016)"
+            includeMargin={false}
+            xPercent={-0.13}
+            yPercent={0.06}
+            style={{
+              stroke: 'black',
+              transform: 'rotate(-90)',
+              textAnchor: 'end'
+            }}
+          />
           <MarkSeries
             colorType="literal"
             onValueMouseOver={(v, {index}) => {
@@ -59,8 +80,9 @@ export default class IncomeScatter extends Component {
           {value !== false &&
             <Hint value={value}>
               <div >
-                <h4>Income: ${value.x}</h4>
-                <h4>Riders: {value.y}</h4>
+                <h3>{value.station}</h3>
+                <p>Income: ${value.x}</p>
+                <p>Riders: {value.y}</p>
               </div>
             </Hint>
           }
