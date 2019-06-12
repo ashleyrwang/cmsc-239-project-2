@@ -5,6 +5,8 @@ import BarChart from './bar';
 import IncomeScatter from './income-scatterplot';
 import MonthlyScatter from './monthly-scatterplot';
 import MonthlyLegend from './monthly-legend';
+import StopTree from './stopTreemap';
+
 
 const introP = `
 The CTA Red Line, also known as the Howard-Dan Ryan Line, is the busiest line on the L system. It
@@ -101,6 +103,10 @@ class RootComponent extends React.Component {
       monthlyData: null,
       annualData: null,
       tempData: null,
+      general16: null,
+      general11: null,
+      general06: null,
+      general01: null,
       loading: true
     };
   }
@@ -108,20 +114,26 @@ class RootComponent extends React.Component {
   componentWillMount() {
     Promise.all([json('data/cta_data_avg.json'),
       json('data/cta_monthly_totals.json'), json('data/cta_annual_totals.json'),
-      json('data/data.json')])
+      json('data/data.json'), json('data/cta_data_avg16.json'), json('data/cta_data_avg11.json'),
+      json('data/cta_data_avg06.json'), json('data/cta_data_avg01.json')])
       .then(dataList => {
         this.setState({
           generalData: dataList[0],
           monthlyData: dataList[1],
           annualData: dataList[2],
           tempData: dataList[3],
+          general16: dataList[4],
+          general11: dataList[5],
+          general06: dataList[6],
+          general01: dataList[7],
           loading: false
         });
       });
   }
 
   render() {
-    const {loading, generalData, monthlyData, annualData, tempData} = this.state;
+    const {loading, generalData, monthlyData, annualData, tempData, 
+      general16, general11, general06, general01} = this.state;
     if (loading) {
       return <h1>LOADING</h1>;
     }
@@ -148,6 +160,7 @@ class RootComponent extends React.Component {
         <div className = "text">{phase1P}</div>
         <PhaseChart data={tempData}/>
         <div className = "text">{phase2P}</div><hr />
+        <StopTree dataList={[general16, general11, general06, general01]}/>
         <div className = "text">{treemapP}</div> <hr />
         <div className = "text">{concP}</div>
       </div>

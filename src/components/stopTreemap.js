@@ -87,7 +87,7 @@ export default class StopTree extends Component {
           }
         </Treemap>
         {
-          <div style={{'font-style': 'italic'}}>
+          <div>
           Select Year:&nbsp;
             {['2016', '2011', '2006', '2001'].map(v => {
               return (<button
