@@ -146,8 +146,8 @@ export default class MonthlyScatter extends Component {
             size={7}
             data={month}
             getColor={(val) => {
-              return (val.dateString === value.dateString && val.y === value.y) ? '#E74C3C' :
-                (val.month === filterBy) ? '#0088e0' : '#1A5276';
+              return (val.dateString === value.dateString && val.y === value.y) ? '#93d5ff' :
+                (filterBy === val.month) ? 'black' : '#1A5276';
             }}
           />
           <LineSeries
@@ -166,15 +166,14 @@ export default class MonthlyScatter extends Component {
             data={annual}
             getColor={(val) => {
               return (val.dateString === value.dateString && val.y === value.y) ?
-                '#F2D7D5' : '#C0392B';
+                '#fca097' : '#C0392B';
             }}
           />
 
           {value !== false &&
             <Hint value={value}>
               <div >
-                <h3>{value.dateString}</h3>
-                <p>Riders: {value.y}</p>
+                {value.dateString}<br />Riders: {value.y}
               </div>
             </Hint>
           }

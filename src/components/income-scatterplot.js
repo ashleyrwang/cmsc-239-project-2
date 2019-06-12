@@ -138,9 +138,9 @@ export default class IncomeScatter extends Component {
           {value !== false &&
             <Hint value={value}>
               <div >
-                <h3>{value.station}</h3>
-                <p>Income: ${value.x}</p>
-                <p>Riders: {value.y}</p>
+                {value.station}<br />
+                Income: ${value.x}<br />
+                Riders: {value.y}
               </div>
             </Hint>
           }
