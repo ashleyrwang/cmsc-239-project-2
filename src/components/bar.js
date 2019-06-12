@@ -1,41 +1,42 @@
 import React, {Component} from 'react';
-import {RadialChart, Hint} from 'react-vis';
-import RadioButtonMenu from './radio-button-menu';
-
-function groupBy(data, key) {
-  return data.reduce((acc, row) => {
-    if (!acc[row[key]]) {
-      acc[row[key]] = [];
-    }
-    acc[row[key]].push(row);
-    return acc;
-  }, {});
-}
+import {
+  XYPlot,
+  XAxis,
+  YAxis,
+  ChartLabel,
+  HorizontalBarSeries
+} from 'react-vis';
+import {scaleLog} from 'd3-scale';
+import {interpolateYlGnBu} from 'd3-scale-chromatic';
 
 export default class BarChart extends Component {
   constructor(props) {
     super(props);
 
     const defaultSort = [...this.props.data]
-      .sort((a, b) => a.order - b.order);
+      .sort((a, b) => b.order - a.order);
     const incomeSort = [...this.props.data]
-      .sort((a, b) => b.med_income - a.med_income);
+      .sort((a, b) => a.med_income - b.med_income);
     const ridershipSort = [...this.props.data]
-      .sort((a, b) => b.avg_rides - a.avg_rides);
+      .sort((a, b) => a.avg_rides - b.avg_rides);
 
     const alphabeticalSort = [...this.props.data].sort((a, b) => {
       if (a.station < b.station) {
-        return -1;
+        return 1;
       }
       if (a.station > b.station) {
-        return 1;
+        return -1;
       }
       return 0;
     });
 
+    const incomeScale = scaleLog()
+      .domain([20150, 140500])
+      .range([1, 0]);
+
     this.state = {
-      value: false,
       sortBy: 'default',
+      scale: incomeScale,
       sorts: {
         default: defaultSort,
         alphabetical: alphabeticalSort,
@@ -45,39 +46,57 @@ export default class BarChart extends Component {
     };
   }
 
+  state = {
+    sortBy: 'default'
+  }
+
   render() {
-    const {value, keyOfInterest} = this.state;
-    const {data} = this.props;
-    const preppedData = Object.entries(groupBy(data, keyOfInterest)).map(([key, values]) => {
-      return {key, size: values.length};
-    });
+    const {
+      sortBy,
+      scale,
+      sorts} = this.state;
+    const chartWidth = 650;
+    const chartHeight = 600;
+    const margin = {
+      left: 120,
+      right: 10,
+      top: 10,
+      bottom: 40
+    };
+    const chartDomain = [0, 15000];
+
+    const sorted = sorts[sortBy];
+    const color = d => interpolateYlGnBu(scale(d));
+
+    const reformat = sorted.map(d => ({
+      y: d.station,
+      x: d.avg_rides,
+      inc: d.med_income
+    }));
+
     return (
       <div>
-      Sort rows:&nbsp;
-        <RadioButtonMenu
-            buttonValues={['alphabetical', 'mean', 'max']}
-            currentValue={sortBy}
-            onClick={value => this.setState({sortBy: value})}
-            />
-        <RadialChart
-          animation
-          innerRadius={100}
-          radius={140}
-          getAngle={d => d.size}
-          data={preppedData}
-          onValueMouseOver={v => this.setState({value: v})}
-          onSeriesMouseOut={v => this.setState({value: false})}
-          width={300}
-          height={300}
-          padAngle={0.04}
+        <XYPlot
+          yType="ordinal"
+          width={chartWidth}
+          height={chartHeight}
+          margin={margin}
+          xDomain={chartDomain}
         >
-          {value !== false && <Hint value={value} />}
-        </RadialChart>
-        {Object.keys(data[0]).map(key => {
+          <XAxis title="Average Daily Ridership (2016)"/>
+          <YAxis />
+          <HorizontalBarSeries
+            colorType="literal"
+            data={reformat}
+            getColor={v => color(v.inc)}
+          />
+        </XYPlot>
+        Sort by:&nbsp;
+        {['default', 'alphabetical', 'income', 'ridership'].map(v => {
           return (<button
-            key={key}
-            onClick={() => this.setState({keyOfInterest: key})}
-            >{key}</button>);
+            key={v}
+            onClick={() => this.setState({sortBy: v})}
+            >{v}</button>);
         })}
       </div>
     );
