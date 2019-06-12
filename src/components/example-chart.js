@@ -27,8 +27,6 @@ export default class ExampleChart extends Component {
     const preppedData = Object.entries(groupBy(data, keyOfInterest)).map(([key, values]) => {
       return {key, size: values.length};
     });
-
-    console.log(preppedData);
     return (
       <div>
         <RadialChart
