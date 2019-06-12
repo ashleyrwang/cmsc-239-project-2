@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Select from 'react-select';
 
 import {
   XYPlot,
@@ -12,16 +13,6 @@ import {
   ChartLabel,
   Hint
 } from 'react-vis';
-
-function groupBy(data, key) {
-  return data.reduce((acc, row) => {
-    if (!acc[row[key]]) {
-      acc[row[key]] = [];
-    }
-    acc[row[key]].push(row);
-    return acc;
-  }, {});
-}
 
 export default class MonthlyScatter extends Component {
   constructor(props) {
@@ -46,7 +37,7 @@ export default class MonthlyScatter extends Component {
         x: elem.x,
         y: elem.y - annualRides[elem.x.getFullYear() - 2001],
         dateString: elem.dateString
-      }
+      };
     });
 
     const meanReformatA = reformatA.map(elem => {
@@ -54,12 +45,19 @@ export default class MonthlyScatter extends Component {
         x: elem.x,
         y: 0,
         dateString: elem.dateString
-      }
+      };
     });
+
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
 
     this.state = {
       value: false,
       valBy: 'Value',
+      filterBy: null,
+      months: monthNames,
       formattedMonthlyData: {
         Value: reformatM,
         'Value-Mean': meanReformatM
@@ -76,7 +74,12 @@ export default class MonthlyScatter extends Component {
   }
 
   render() {
-    const {value, valBy, formattedMonthlyData, formattedAnnualData} = this.state;
+    const {
+      value,
+      valBy,
+      months,
+      formattedMonthlyData,
+      formattedAnnualData} = this.state;
 
     const month = formattedMonthlyData[valBy];
     const annual = formattedAnnualData[valBy];
@@ -89,7 +92,12 @@ export default class MonthlyScatter extends Component {
           key={v}
           onClick={() => this.setState({valBy: v})}
           >{v}</button>);
-        })}
+        })} <br />
+        <Select options={months}
+          closeMenuOnSelect
+          isClearable
+          placeholder="Highlight a month"
+          onChange={d => this.setState({filterBy: d ? d.value : null})}/>
         <XYPlot width={1000} height={500} margin={{left: 90, right: 10, top: 10, bottom: 50}} xType="time">
           <VerticalGridLines />
           <HorizontalGridLines />
