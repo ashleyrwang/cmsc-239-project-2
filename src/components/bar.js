@@ -85,6 +85,7 @@ export default class BarChart extends Component {
           <XAxis title="Average Daily Ridership (2016)"/>
           <YAxis />
           <HorizontalBarSeries
+            animation
             colorType="literal"
             data={reformat}
             getColor={v => color(v.inc)}

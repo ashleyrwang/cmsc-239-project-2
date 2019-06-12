@@ -35,8 +35,6 @@ export default class PhaseChart extends Component {
       .domain([-21, 85])
       .range([1, 0]);
 
-    console.log(getDomain(this.props.data, 'ridership'));
-
     this.state = {
       filter: 'Weekday',
       filters: {
@@ -95,7 +93,7 @@ export default class PhaseChart extends Component {
             style={{
               line: {display: 'none'},
               ticks: {stroke: '#000'},
-              text: {stroke: 'none', fill: '#000', fontWeight: 600}
+              text: {stroke: 'none', fill: '#000'}
             }}/>
         </XYPlot>
         Filter data by:&nbsp;
