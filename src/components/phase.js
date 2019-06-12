@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {XYPlot, ArcSeries} from 'react-vis';
+import {XYPlot, ArcSeries, YAxis, CircularGridLines} from 'react-vis';
 import {scaleLinear} from 'd3-scale';
 import {interpolateRdBu} from 'd3-scale-chromatic';
 
@@ -88,6 +88,15 @@ export default class PhaseChart extends Component {
             data={reformat}
             colorType={'literal'}
           />
+          <CircularGridLines />
+          <YAxis
+            left={chartWidth / 2 + 5}
+            tickFormat={(t, i) => t > 0 ? t : ''}
+            style={{
+              line: {display: 'none'},
+              ticks: {stroke: '#000'},
+              text: {stroke: 'none', fill: '#000', fontWeight: 600}
+            }}/>
         </XYPlot>
         Filter data by:&nbsp;
         {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
