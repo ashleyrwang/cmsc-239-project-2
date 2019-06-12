@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-
 import {RadialChart, Hint} from 'react-vis';
+import RadioButtonMenu from './radio-button-menu';
 
 function groupBy(data, key) {
   return data.reduce((acc, row) => {
@@ -16,10 +16,22 @@ export default class BarChart extends Component {
   constructor(props) {
     super(props);
 
-    const defaultSort = [...this.props.data];
-    const alphabeticalSort = [...this.props.data];
-    const incomeSort = [...this.props.data];
-    const ridershipSort = [...this.props.data];
+    const defaultSort = [...this.props.data]
+      .sort((a, b) => a.order - b.order);
+    const incomeSort = [...this.props.data]
+      .sort((a, b) => b.med_income - a.med_income);
+    const ridershipSort = [...this.props.data]
+      .sort((a, b) => b.avg_rides - a.avg_rides);
+
+    const alphabeticalSort = [...this.props.data].sort((a, b) => {
+      if (a.station < b.station) {
+        return -1;
+      }
+      if (a.station > b.station) {
+        return 1;
+      }
+      return 0;
+    });
 
     this.state = {
       value: false,
@@ -41,6 +53,12 @@ export default class BarChart extends Component {
     });
     return (
       <div>
+      Sort rows:&nbsp;
+        <RadioButtonMenu
+            buttonValues={['alphabetical', 'mean', 'max']}
+            currentValue={sortBy}
+            onClick={value => this.setState({sortBy: value})}
+            />
         <RadialChart
           animation
           innerRadius={100}
