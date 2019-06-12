@@ -1,6 +1,7 @@
 import React from 'react';
 import {csv, json} from 'd3-fetch';
 import ExampleChart from './example-chart';
+import BarChart from './bar';
 import IncomeScatter from './income-scatterplot';
 import MonthlyScatter from './monthly-scatterplot';
 import MonthlyLegend from './monthly-legend';
@@ -46,6 +47,8 @@ class RootComponent extends React.Component {
       <div className="relative">
         <h1> Hello Explainable!</h1>
         <div>{`The example data was loaded! There are ${generalData.length} rows`}</div>
+        <BarChart data={generalData}/>
+        <div>{longBlock}</div>
         <IncomeScatter data={generalData}/>
         <div>{longBlock}</div>
         <MonthlyScatter data={{annData: annualData, monData: monthlyData}}/>
