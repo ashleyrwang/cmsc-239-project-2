@@ -16,14 +16,22 @@ the Red Line changed over time?
 
 const bar1P = `
 Consider the bar chart below, where the bars are arranged vertically in geographical order (north to south),
-and the bars are color-coded by household median income — light yellow for high median incomes, and dark blue
-for low median incomes:`;
+and the bars are color-coded by household median income — light yellow for high incomes, and dark blue
+for low incomes:`;
 
 const bar2P = `
-The first way we visualized data was through a bar chart. By cycling through the different buttons below, you
-can resort the bar chart to see different relationships between ridership and various variables.
-In the middle of the line (Loop area up to Wrigley
-Field), we saw relatively high income and high ridership compared to the rest of the line.
+Sorting the bar graph geographically, we can see that based on ridership and income, the Red Line stations
+can be separated into 3 subsets: Howard to Wilson (North Side), Sheridan to Roosevelt
+(Central), and Cermak-Chinatown to 95th/Dan Ryan (South Side). The North Side stations have low ridership
+and moderate income, the Central stations have moderate-to-high ridership and high income,
+and the South Side stations have low-to-moderate ridership and low income. Note also
+that the terminuses of the Red Line (i.e., Howard and 95th/Dan Ryan) have higher ridership than
+the stations adjacent to them.
+`;
+
+const bar3P = `
+Sorting the bar graph by ridership or by income suggests that there may be a relationship
+between income and ridership, but the relationship is difficult to discern.
 `;
 
 const phaseP = `
@@ -37,14 +45,19 @@ is a stroner indicator of ridership. For example, we generally see that on the w
 on Saturdays than on Sundays.
 `;
 
-const scatter1P = `
-The first scatterplot shows the relationship between median household income and average daily ridership. Each data
-point is a station. Although this data was already discussed in the first bar chart, this scatterplot allows for greater
-clarity about the exact relationship between income and ridership. Each data point, on mouseover, shows the stop name,
-income, and ridership. The buttons on the bottom allow you to add a trendline to the data, fitting the data in various
-ways and then showing the equation below. In statistics, an R-squared value that is closer to 1 means it fits the line better,
-thus meaning the line is more accurate to the data. From this, we found that a quadratic line was the best fit, meaning
-that as income increases, ridership increases slightly less.
+const scatter1_1P = `
+So let us consider a scatterplot instead, with median household income on the x-axis and average daily
+ridership on the y-axis. Hover over the points to see the station name, the exact income, and the
+exact ridership:
+`;
+
+const scatter1_2P = `
+Which trendline describes the data most accurately? This is a difficult question to answer. In statistics, the R-squared
+value measures how close the data is to the trendline. Notice that the R-squared values for the
+linear, exponential, and quadratic trendlines are all within 0.02 of each other. However, the
+important takeaway is that no matter the type of trendline, they all have a positive slope, meaning
+that the relationship between income and ridership is positive — i.e., as income increases, so does
+ridership.
 `;
 
 const scatter2P = `
@@ -112,9 +125,11 @@ class RootComponent extends React.Component {
         <div className = "text">{introP}</div> <hr />
         <div className = "text">{bar1P}</div>
         <BarChart data={generalData}/>
-        <div className = "text">{bar2P}</div> <hr />
-        <div className = "text">{scatter1P}</div>
+        <div className = "text">{bar2P}</div>
+        <div className = "text">{bar3P}</div><hr />
+        <div className = "text">{scatter1_1P}</div>
         <IncomeScatter data={generalData}/>
+        <div className = "text">{scatter1_2P}</div><hr />
         <div className = "text">{phaseP}</div>
         <PhaseChart data={tempData}/>
         <div className = "text">{scatter2P}</div>

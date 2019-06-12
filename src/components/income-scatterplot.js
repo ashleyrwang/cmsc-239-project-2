@@ -145,7 +145,7 @@ export default class IncomeScatter extends Component {
             </Hint>
           }
         </XYPlot>
-        Add trendline:&nbsp;
+        Try adding a trendline to the data:&nbsp;
         {['Linear', 'Linear with b=0', 'Exponential', 'Quadratic'].map(v => {
             return (<button
               key={v}
