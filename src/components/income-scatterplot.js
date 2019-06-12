@@ -8,26 +8,49 @@ import {
   HorizontalGridLines,
   MarkSeries,
   ChartLabel,
-  Hint
+  Hint,
+  LineSeries
 } from 'react-vis';
 
 export default class IncomeScatter extends Component {
   constructor() {
     super();
+    const trendLine = [
+      {x: 0, y: 1971.7},
+      {x: 150000, y: 12426.7}
+    ];
+    const trendlineIntercept = [
+      {x: 0, y: 0},
+      {x: 150000, y: 14445}
+    ]
     this.state = {
-      value: false
+      value: false,
+      trendBy: 'No Trendline',
+      trendline: {
+        'No Trendline': [],
+        'Trendline with y-intercept': trendLine,
+        'Trendline with 0 y-intercept': trendlineIntercept
+      }
     };
   }
 
+  state = {
+    trendBy: 'No Trendline'
+  }
+
   render() {
-    const {value} = this.state;
+    const {value, trendBy, trendline} = this.state;
     const {data} = this.props;
     const formattedData = data.map(elem => {
       return {x: elem.med_income, y: Math.round(elem.avg_rides), station: elem.station};
     });
+
+    const trendData = trendline[trendBy];
+
     return (
       <div>
-        <XYPlot width={500} height={500} margin={{left: 80, right: 10, top: 10, bottom: 80}}>
+        <XYPlot width={700} height={500} margin={{left: 80, right: 10, top: 10, bottom: 80}}
+          xDomain={[0, 150000]} yDomain={[0, 15000]}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
@@ -44,7 +67,7 @@ export default class IncomeScatter extends Component {
           <ChartLabel
             text="AVERAGE DAILY RIDERSHIP (2016)"
             includeMargin={false}
-            xPercent={-0.13}
+            xPercent={-0.1}
             yPercent={0.06}
             fontSize={48}
             style={{
@@ -52,6 +75,11 @@ export default class IncomeScatter extends Component {
               transform: 'rotate(-90)',
               textAnchor: 'end'
             }}
+          />
+          <LineSeries
+            animation
+            color="#C0392B"
+            data={trendData}
           />
           <MarkSeries
             colorType="literal"
@@ -77,6 +105,14 @@ export default class IncomeScatter extends Component {
             </Hint>
           }
         </XYPlot>
+        Add trendline:&nbsp;
+        {['Trendline with y-intercept',
+          'Trendline with 0 y-intercept'].map(v => {
+            return (<button
+              key={v}
+              onClick={() => this.setState({trendBy: v})}
+              >{v}</button>);
+          })}
       </div>
     );
   }
