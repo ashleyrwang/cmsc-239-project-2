@@ -34,19 +34,19 @@ export default class BarChart extends Component {
       .range([1, 0]);
 
     this.state = {
-      sortBy: 'geographical',
+      sortBy: 'geographically',
       scale: incomeScale,
       sorts: {
-        geographical: defaultSort,
-        alphabetical: alphabeticalSort,
-        income: incomeSort,
-        ridership: ridershipSort
+        geographically: defaultSort,
+        alphabetically: alphabeticalSort,
+        'by income': incomeSort,
+        'by ridership': ridershipSort
       }
     };
   }
 
   state = {
-    sortBy: 'geographical'
+    sortBy: 'geographically'
   }
 
   render() {
@@ -55,7 +55,7 @@ export default class BarChart extends Component {
       scale,
       sorts} = this.state;
     const chartWidth = 700;
-    const chartHeight = 730;
+    const chartHeight = 700;
     const margin = {
       left: 120,
       right: 10,
@@ -94,8 +94,8 @@ export default class BarChart extends Component {
             }}
           />
         </XYPlot>
-        Sort bar chart by:&nbsp;
-        {['geographical', 'alphabetical', 'income', 'ridership'].map(v => {
+        Try re-sorting the bar chart:&nbsp;
+        {['geographically', 'alphabetically', 'by income', 'by ridership'].map(v => {
           return (<button
             key={v}
             onClick={() => this.setState({sortBy: v})}
