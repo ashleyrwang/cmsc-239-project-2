@@ -44,17 +44,21 @@ class RootComponent extends React.Component {
       return <h1>LOADING</h1>;
     }
     return (
-      <div className="relative">
-        <h1> Hello Explainable!</h1>
+      <div className="react">
+        <div className = "title">
+        From Howard to 95th/Dan Ryan: <br />
+        Ridership and Income Along the CTA'S Red Line
+        </div>
+        <p>— by Christina Ford, Connor Hopcraft, and Ashley Wang</p>
         <div>{`The example data was loaded! There are ${generalData.length} rows`}</div>
         <BarChart data={generalData}/>
-        <div>{longBlock}</div>
+        <div className = "text">{longBlock}</div>
         <IncomeScatter data={generalData}/>
-        <div>{longBlock}</div>
+        <div className = "text">{longBlock}</div>
         <MonthlyScatter data={{annData: annualData, monData: monthlyData}}/>
         <MonthlyLegend/>
 
-        <div>{longBlock}</div>
+        <div className = "text">{longBlock}</div>
       </div>
     );
   }

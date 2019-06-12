@@ -3,7 +3,6 @@ import {
   XYPlot,
   XAxis,
   YAxis,
-  ChartLabel,
   HorizontalBarSeries
 } from 'react-vis';
 import {scaleLog} from 'd3-scale';
@@ -35,10 +34,10 @@ export default class BarChart extends Component {
       .range([1, 0]);
 
     this.state = {
-      sortBy: 'default',
+      sortBy: 'geographical',
       scale: incomeScale,
       sorts: {
-        default: defaultSort,
+        geographical: defaultSort,
         alphabetical: alphabeticalSort,
         income: incomeSort,
         ridership: ridershipSort
@@ -47,7 +46,7 @@ export default class BarChart extends Component {
   }
 
   state = {
-    sortBy: 'default'
+    sortBy: 'geographical'
   }
 
   render() {
@@ -55,8 +54,8 @@ export default class BarChart extends Component {
       sortBy,
       scale,
       sorts} = this.state;
-    const chartWidth = 650;
-    const chartHeight = 600;
+    const chartWidth = 700;
+    const chartHeight = 730;
     const margin = {
       left: 120,
       right: 10,
@@ -75,7 +74,7 @@ export default class BarChart extends Component {
     }));
 
     return (
-      <div>
+      <div className="bar-container">
         <XYPlot
           yType="ordinal"
           width={chartWidth}
@@ -89,10 +88,13 @@ export default class BarChart extends Component {
             colorType="literal"
             data={reformat}
             getColor={v => color(v.inc)}
+            onValueMouseOver={v => {
+              console.log(v);
+            }}
           />
         </XYPlot>
-        Sort by:&nbsp;
-        {['default', 'alphabetical', 'income', 'ridership'].map(v => {
+        Sort bar chart by:&nbsp;
+        {['geographical', 'alphabetical', 'income', 'ridership'].map(v => {
           return (<button
             key={v}
             onClick={() => this.setState({sortBy: v})}
