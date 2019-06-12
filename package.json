@@ -36,6 +36,7 @@
     "d3-shape": "^1.2.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-select": "^3.0.4",
     "react-vis": "^1.11.7"
   },
   "scripts": {

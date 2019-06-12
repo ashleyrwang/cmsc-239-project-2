@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Select from 'react-select';
 
 import {
   XYPlot,
@@ -9,43 +10,105 @@ import {
   MarkSeries,
   DiscreteColorLegend,
   LineSeries,
-  LineMarkSeries,
   ChartLabel,
-  LabelSeries,
   Hint
 } from 'react-vis';
 
-function groupBy(data, key) {
-  return data.reduce((acc, row) => {
-    if (!acc[row[key]]) {
-      acc[row[key]] = [];
-    }
-    acc[row[key]].push(row);
-    return acc;
-  }, {});
-}
-
 export default class MonthlyScatter extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const {monData, annData} = this.props.data;
+
+    const reformatM = monData.map(elem => {
+      const date = new Date(elem.date);
+      return {
+        x: date,
+        y: elem.total_rides,
+        dateString: elem.date,
+        month: date.getMonth()};
+    });
+
+    const reformatA = annData.map((elem, i) => {
+      const average = i === 17 ? Math.round(elem.total_rides / 10) :
+        Math.round(elem.total_rides / 12);
+      return {
+        x: new Date(elem.year),
+        y: average,
+        dateString: elem.year.slice(-4)};
+    });
+
+    const annualRides = reformatA.map(elem => elem.y);
+
+    const meanReformatM = reformatM.map(elem => {
+      return {
+        x: elem.x,
+        y: elem.y - annualRides[elem.x.getFullYear() - 2001],
+        dateString: elem.dateString,
+        month: elem.month
+      };
+    });
+
+    const meanReformatA = reformatA.map(elem => {
+      return {
+        x: elem.x,
+        y: 0,
+        dateString: elem.dateString
+      };
+    });
+
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const monthSelect = monthNames.map((d, i) => ({value: i, label: d}));
+
     this.state = {
-      valueMon: false,
-      valueAnn: false
+      value: false,
+      valBy: 'Value',
+      filterBy: null,
+      months: monthSelect,
+      formattedMonthlyData: {
+        Value: reformatM,
+        'Value-Mean': meanReformatM
+      },
+      formattedAnnualData: {
+        Value: reformatA,
+        'Value-Mean': meanReformatA
+      }
     };
   }
 
+  state = {
+    valBy: 'Value'
+  }
+
   render() {
-    const {valueMon, valueAnn} = this.state;
-    const {monData, annData} = this.props.data;
-    const formattedMonthlyData = monData.map(elem => {
-      return {x: new Date(elem.date), y: elem.total_rides, dateString: elem.date};
-    });
-    const formattedAnnualData = annData.map(elem => {
-      return {x: new Date(elem.year), y: Math.round(elem.total_rides / 12), dateString: elem.year.slice(-4)};
-    });
+    const {
+      value,
+      valBy,
+      filterBy,
+      months,
+      formattedMonthlyData,
+      formattedAnnualData} = this.state;
+
+    const month = formattedMonthlyData[valBy];
+    const annual = formattedAnnualData[valBy];
 
     return (
       <div>
+        Try showing monthly data as:&nbsp;
+        {['Value', 'Value-Mean'].map(v => {
+          return (<button
+          key={v}
+          onClick={() => this.setState({valBy: v})}
+          >{v}</button>);
+        })} <br />
+        <Select
+          options={months}
+          closeMenuOnSelect
+          isClearable
+          placeholder="Try highlighting a month"
+          onChange={d => this.setState({filterBy: d ? d.value : null})}/>
         <XYPlot width={1000} height={500} margin={{left: 90, right: 10, top: 10, bottom: 50}} xType="time">
           <VerticalGridLines />
           <HorizontalGridLines />
@@ -72,76 +135,45 @@ export default class MonthlyScatter extends Component {
               textAnchor: 'end'
             }}
           />
-
-          <ChartLabel
-            text="RIDERSHIP"
-            includeMargin={false}
-            xPercent={-0.08}
-            yPercent={0.06}
-            fontSize={48}
-            style={{
-              stroke: 'black',
-              transform: 'rotate(-90)',
-              textAnchor: 'end'
-            }}
-          />
-
-          <ChartLabel
-            text="Construction"
-            includeMargin={false}
-            xPercent={0.64}
-            yPercent={0.7}
-            style={{
-              fontSize: 100
-            }}
-          />
-          <LineMarkSeries
+          <MarkSeries
+            animation
             colorType="literal"
-            lineStyle={{stroke: '#C0392B'}}
             onValueMouseOver={(v, {index}) => {
-              this.setState({hoverPointId: index, valueAnn: v});
+              this.setState({hoverPointId: index, value: v});
             }}
-            onValueMouseOut={() => this.setState({valueAnn: false})}
+            onValueMouseOut={v => this.setState({value: false})}
+            opacity={0.6}
             size={7}
-            data={formattedAnnualData}
+            data={month}
             getColor={(val) => {
-              return (val.dateString === valueAnn.dateString && val.y === valueAnn.y) ?
-                '#F2D7D5' : '#C0392B';
+              return (val.dateString === value.dateString && val.y === value.y) ? '#93d5ff' :
+                (filterBy === val.month) ? 'black' : '#1A5276';
             }}
+          />
+          <LineSeries
+            animation
+            color="#C0392B"
+            data={annual}
           />
           <MarkSeries
+            animation
             colorType="literal"
             onValueMouseOver={(v, {index}) => {
-              this.setState({hoverPointIdMonth: index, valueMon: v});
+              this.setState({hoverPointId: index, value: v});
             }}
-            onValueMouseOut={() => this.setState({valueMon: false})}
-            opacity={0.5}
+            onValueMouseOut={v => this.setState({value: false})}
             size={7}
-            data={formattedMonthlyData}
+            data={annual}
             getColor={(val) => {
-              return (val.dateString === valueMon.dateString && val.y === valueMon.y) ?
-                '#E74C3C' : '#1A5276';
+              return (val.dateString === value.dateString && val.y === value.y) ?
+                '#fca097' : '#C0392B';
             }}
           />
-          <DiscreteColorLegend
-            style={{position: 'absolute', left: '100px', top: '25px'}}
-            orientation={'horizontal'}
-            items={[{title: 'Monthly Total', color: '#1A5276'}, {title: 'Yearly Average', color: '#C0392B'}]}
-            height={70}
-          />
-          {valueMon !== false &&
-            <Hint value={valueMon}>
-              <div>
-                <h3>{valueMon.dateString}</h3>
-                <p>Riders: {valueMon.y}</p>
-              </div>
-            </Hint>
-          }
-          {valueAnn !== false &&
-            <Hint value={valueAnn}>
-              <div>
-                <h3>{valueAnn.dateString}</h3>
-                <p>Avg: {valueAnn.y}</p>
+
+          {value !== false &&
+            <Hint value={value}>
+              <div >
+                {value.dateString}<br />Riders: {value.y}
               </div>
             </Hint>
           }
