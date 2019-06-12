@@ -18,9 +18,16 @@ export default class MonthlyScatter extends Component {
   constructor(props) {
     super(props);
     const {monData, annData} = this.props.data;
+
     const reformatM = monData.map(elem => {
-      return {x: new Date(elem.date), y: elem.total_rides, dateString: elem.date};
+      const date = new Date(elem.date);
+      return {
+        x: date,
+        y: elem.total_rides,
+        dateString: elem.date,
+        month: date.getMonth()};
     });
+
     const reformatA = annData.map((elem, i) => {
       const average = i === 17 ? Math.round(elem.total_rides / 10) :
         Math.round(elem.total_rides / 12);
@@ -36,7 +43,8 @@ export default class MonthlyScatter extends Component {
       return {
         x: elem.x,
         y: elem.y - annualRides[elem.x.getFullYear() - 2001],
-        dateString: elem.dateString
+        dateString: elem.dateString,
+        month: elem.month
       };
     });
 
@@ -52,12 +60,13 @@ export default class MonthlyScatter extends Component {
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
+    const monthSelect = monthNames.map((d, i) => ({value: i, label: d}));
 
     this.state = {
       value: false,
       valBy: 'Value',
       filterBy: null,
-      months: monthNames,
+      months: monthSelect,
       formattedMonthlyData: {
         Value: reformatM,
         'Value-Mean': meanReformatM
@@ -77,6 +86,7 @@ export default class MonthlyScatter extends Component {
     const {
       value,
       valBy,
+      filterBy,
       months,
       formattedMonthlyData,
       formattedAnnualData} = this.state;
@@ -93,7 +103,8 @@ export default class MonthlyScatter extends Component {
           onClick={() => this.setState({valBy: v})}
           >{v}</button>);
         })} <br />
-        <Select options={months}
+        <Select
+          options={months}
           closeMenuOnSelect
           isClearable
           placeholder="Highlight a month"
@@ -135,8 +146,8 @@ export default class MonthlyScatter extends Component {
             size={7}
             data={month}
             getColor={(val) => {
-              return (val.dateString === value.dateString && val.y === value.y) ?
-                '#E74C3C' : '#1A5276';
+              return (val.dateString === value.dateString && val.y === value.y) ? '#E74C3C' :
+                (val.month === filterBy) ? '#0088e0' : '#1A5276';
             }}
           />
           <LineSeries
