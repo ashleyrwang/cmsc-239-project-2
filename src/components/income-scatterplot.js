@@ -15,21 +15,61 @@ import {
 export default class IncomeScatter extends Component {
   constructor() {
     super();
-    const trendLine = [
-      {x: 0, y: 1971.7},
-      {x: 150000, y: 12426.7}
-    ];
-    const trendlineIntercept = [
-      {x: 0, y: 0},
-      {x: 150000, y: 14445}
-    ]
+
+    const numX = 140;
+    const xs = [...new Array(numX)].map((d, i) => i / numX * 150000);
+
+    const exp = {
+      data: xs.map(d => ({
+        x: d,
+        y: 2709.8 * Math.exp(0.00001 * d)
+      })),
+      equation: 'y = 2709.8e^(0.00001x)',
+      rsquared: 0.4099
+    };
+
+    const quad = {
+      data: xs.map(d => ({
+        x: d,
+        y: -0.0000005 * Math.pow(d, 2) + 0.1424 * d - 115.19
+      })),
+      equation: 'y = -0.0000005x^2 + 0.1424x - 115.19',
+      rsquared: 0.4311
+    };
+
+    const trendLine = {
+      data: xs.map(d => ({
+        x: d,
+        y: 0.0697 * d + 1971.7
+      })),
+      equation: 'y = 0.0697x + 1971.7',
+      rsquared: 0.4093
+    };
+
+    const trendlineIntercept = {
+      data: xs.map(d => ({
+        x: d,
+        y: 0.0963 * d
+      })),
+      equation: 'y = 0.0963x',
+      rsquared: 0.3345
+    };
+
+    const noTrend = {
+      data: [],
+      equation: 'N/A',
+      rsquared: 'N/A'
+    }
+
     this.state = {
       value: false,
       trendBy: 'No Trendline',
       trendline: {
-        'No Trendline': [],
+        'No Trendline': noTrend,
         'Linear': trendLine,
-        'Linear with forced 0 y-intercept': trendlineIntercept
+        'Linear with b=0': trendlineIntercept,
+        'Exponential': exp,
+        'Quadratic': quad
       }
     };
   }
@@ -79,7 +119,7 @@ export default class IncomeScatter extends Component {
           <LineSeries
             animation
             color="#C0392B"
-            data={trendData}
+            data={trendData.data}
           />
           <MarkSeries
             colorType="literal"
@@ -106,13 +146,14 @@ export default class IncomeScatter extends Component {
           }
         </XYPlot>
         Add trendline:&nbsp;
-        {['Linear',
-          'Linear with forced 0 y-intercept'].map(v => {
+        {['Linear', 'Linear with b=0', 'Exponential', 'Quadratic'].map(v => {
             return (<button
               key={v}
               onClick={() => this.setState({trendBy: v})}
               >{v}</button>);
-          })}
+          })} <br />
+        Equation:&nbsp;{trendData.equation} <br />
+        R-squared:&nbsp;{trendData.rsquared} <br />
       </div>
     );
   }
