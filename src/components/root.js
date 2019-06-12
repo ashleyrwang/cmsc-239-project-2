@@ -1,6 +1,6 @@
 import React from 'react';
 import {csv, json} from 'd3-fetch';
-import ExampleChart from './example-chart';
+import PhaseChart from './phase';
 import BarChart from './bar';
 import IncomeScatter from './income-scatterplot';
 import MonthlyScatter from './monthly-scatterplot';
@@ -21,25 +21,28 @@ class RootComponent extends React.Component {
       generalData: null,
       monthlyData: null,
       annualData: null,
+      tempData: null,
       loading: true
     };
   }
 
   componentWillMount() {
     Promise.all([json('data/cta_data_avg.json'),
-      json('data/cta_monthly_totals.json'), json('data/cta_annual_totals.json')])
+      json('data/cta_monthly_totals.json'), json('data/cta_annual_totals.json'),
+      json('data/data.json')])
       .then(dataList => {
         this.setState({
           generalData: dataList[0],
           monthlyData: dataList[1],
           annualData: dataList[2],
+          tempData: dataList[3],
           loading: false
         });
       });
   }
 
   render() {
-    const {loading, generalData, monthlyData, annualData} = this.state;
+    const {loading, generalData, monthlyData, annualData, tempData} = this.state;
     if (loading) {
       return <h1>LOADING</h1>;
     }
@@ -52,6 +55,8 @@ class RootComponent extends React.Component {
         <p>— by Christina Ford, Connor Hopcraft, and Ashley Wang</p>
         <div>{`The example data was loaded! There are ${generalData.length} rows`}</div>
         <BarChart data={generalData}/>
+        <div className = "text">{longBlock}</div>
+        <PhaseChart data={tempData}/>
         <div className = "text">{longBlock}</div>
         <IncomeScatter data={generalData}/>
         <div className = "text">{longBlock}</div>
