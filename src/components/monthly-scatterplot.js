@@ -8,6 +8,7 @@ import {
   HorizontalGridLines,
   MarkSeries,
   DiscreteColorLegend,
+  LineSeries,
   ChartLabel,
   Hint
 } from 'react-vis';
@@ -34,18 +35,22 @@ export default class MonthlyScatter extends Component {
     const {value} = this.state;
     const {monData, annData} = this.props.data;
     console.log(monData);
-    const formattedData = monData.map(elem => {
+    const formattedMonthlyData = monData.map(elem => {
       return {x: new Date(elem.date), y: elem.total_rides, dateString: elem.date};
     });
+    const formattedAnnualData = annData.map(elem => {
+      return {x: new Date(elem.year), y: Math.round(elem.total_rides / 12), dateString: elem.year.slice(-4)};
+    });
+
     return (
       <div>
-        <XYPlot width={500} height={500} margin={{left: 80, right: 10, top: 10, bottom: 80}} xType="time">
+        <XYPlot width={1000} height={500} margin={{left: 90, right: 10, top: 10, bottom: 50}} xType="time">
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
           <YAxis />
           <ChartLabel
-            text="MEDIAN HOUSEHOLD INCOME (2016)"
+            text="YEAR"
             includeMargin={false}
             xPercent={0.01}
             yPercent={1.13}
@@ -54,9 +59,9 @@ export default class MonthlyScatter extends Component {
             }}
           />
           <ChartLabel
-            text="AVERAGE DAILY RIDERSHIP (2016)"
+            text="RIDERSHIP"
             includeMargin={false}
-            xPercent={-0.13}
+            xPercent={-0.08}
             yPercent={0.06}
             fontSize={48}
             style={{
@@ -73,16 +78,34 @@ export default class MonthlyScatter extends Component {
             onValueMouseOut={v => this.setState({value: false})}
             opacity={0.6}
             size={7}
-            data={formattedData}
+            data={formattedMonthlyData}
             getColor={(val) => {
               return (val.dateString === value.dateString && val.y === value.y) ?
                 '#E74C3C' : '#1A5276';
             }}
           />
+          <LineSeries
+            color="#C0392B"
+            data={formattedAnnualData}
+          />
+          <MarkSeries
+            colorType="literal"
+            onValueMouseOver={(v, {index}) => {
+              this.setState({hoverPointId: index, value: v});
+            }}
+            onValueMouseOut={v => this.setState({value: false})}
+            size={7}
+            data={formattedAnnualData}
+            getColor={(val) => {
+              return (val.dateString === value.dateString && val.y === value.y) ?
+                '#F2D7D5' : '#C0392B';
+            }}
+          />
+
           {value !== false &&
             <Hint value={value}>
               <div >
-                <p>{value.dateString}</p>
+                <h3>{value.dateString}</h3>
                 <p>Riders: {value.y}</p>
               </div>
             </Hint>

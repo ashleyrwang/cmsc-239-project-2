@@ -3,6 +3,7 @@ import {csv, json} from 'd3-fetch';
 import ExampleChart from './example-chart';
 import IncomeScatter from './income-scatterplot';
 import MonthlyScatter from './monthly-scatterplot';
+import MonthlyLegend from './monthly-legend';
 
 const longBlock = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
@@ -38,7 +39,6 @@ class RootComponent extends React.Component {
 
   render() {
     const {loading, generalData, monthlyData, annualData} = this.state;
-    console.log(monthlyData);
     if (loading) {
       return <h1>LOADING</h1>;
     }
@@ -49,6 +49,7 @@ class RootComponent extends React.Component {
         <IncomeScatter data={generalData}/>
         <div>{longBlock}</div>
         <MonthlyScatter data={{annData: annualData, monData: monthlyData}}/>
+        <MonthlyLegend/>
 
         <div>{longBlock}</div>
       </div>
