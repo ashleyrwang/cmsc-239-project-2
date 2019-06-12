@@ -34,16 +34,15 @@ Sorting the bar graph by ridership or by income suggests that there may be a rel
 between income and ridership, but the relationship is difficult to discern.
 `;
 
-const phaseP = `
-So it seems that the geographic location may have something to do with why people choose to take the Red Line,
-but what else could drive demand? Perhaps the day of the week or temperature? In this phase diagram, each slice of
-the diagram represents total ridership on the Red Line for a single day. The length of the bar encodes that total
-ridership, and the fill is a diverging colormap, with a darker blue meaning colder, and a darker red meaning warmer.
-By filtering out the data points, you can view trends for similar data points (seeing all Monday riderships, weekends, etc.).
-Generally, it seems like temperature is not a heavy factor for ridership (people still need to commute), but day of the week
-is a stroner indicator of ridership. For example, we generally see that on the weekends, there are more people commuting
-on Saturdays than on Sundays.
+const phase1P = `
+Now, let's look at the relationship between time and ridership on a smaller scale. This is a phase diagram,
+where each slice of the diagram represents total ridership on the Red Line for a single day. The slices
+are color-coded by temperature: dark red for warm days, dark blue for cold days (freezing point is white).
 `;
+
+const phase2P = `
+Filter the data by the days of the week. What do you see? Notice that Sundays tend to have lower ridership
+than Saturdays, which in turn have lower ridership than weekdays.`;
 
 const scatter1_1P = `
 So let us consider a scatterplot instead, with median household income on the x-axis and average daily
@@ -83,10 +82,15 @@ this is a paragraph about the treemap.
 `;
 
 const concP = `
-There are a lot of factors that could affect ridership on the Red Line. We have found that generally, people will take
-the Red Line because they need to go places. But income affects how many people may get on a stop, and special events may
-also affect how many people take the train. The day of the week generally shows little variance, but there are usually
-differences between the days of the week. [something about the treemap].
+Ridership on the Red Line is a phenomenon that can be influenced by many variables. In this article, we have
+looked at the effect that geographical location, income, time, day of week, and temperature have on
+ridership. The geographical location of a station impacts how many people board the Red Line at the station.
+The median income may not only indicate how affordable the Red Line is for residents near a particular station,
+but it may also indicate how popular the station is as an origin and a destination for visitors.
+Red Line ridership has also changed
+over the years, with particular events such as the 2013 Reconstruction Project having a significant impact.
+Furthermore, within each day of the week, there is little variance in ridership; yet, there are significant differences across
+days of the week. [something about the treemap].
 `;
 
 class RootComponent extends React.Component {
@@ -141,9 +145,10 @@ class RootComponent extends React.Component {
         <MonthlyLegend/>
         <div className = "text">{scatter2_2P}</div>
         <div className = "text">{scatter2_3P}</div><hr />
-        <div className = "text">{phaseP}</div>
+        <div className = "text">{phase1P}</div>
         <PhaseChart data={tempData}/>
-        <div className = "text">{treemapP}</div>
+        <div className = "text">{phase2P}</div><hr />
+        <div className = "text">{treemapP}</div> <hr />
         <div className = "text">{concP}</div>
       </div>
     );

@@ -36,7 +36,7 @@ export default class PhaseChart extends Component {
       .range([1, 0]);
 
     this.state = {
-      filter: 'Weekday',
+      filter: 'All',
       filters: {
         Monday: monSort,
         Tuesday: tueSort,
@@ -54,7 +54,7 @@ export default class PhaseChart extends Component {
   }
 
   state = {
-    filter: 'Weekday'
+    filter: 'All'
   }
 
   render() {
@@ -96,7 +96,7 @@ export default class PhaseChart extends Component {
               text: {stroke: 'none', fill: '#000'}
             }}/>
         </XYPlot>
-        Filter data by:&nbsp;
+        Try filtering the data by:&nbsp;
         {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
           'Saturday', 'Sunday', 'Weekday', 'Weekend', 'All'].map(v => {
             return (<button
