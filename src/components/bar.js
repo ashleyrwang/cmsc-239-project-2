@@ -34,7 +34,7 @@ export default class BarChart extends Component {
       .range([1, 0]);
 
     this.state = {
-      sortBy: 'geographically',
+      sortBy: 'alphabetically',
       scale: incomeScale,
       sorts: {
         geographically: defaultSort,
@@ -46,7 +46,7 @@ export default class BarChart extends Component {
   }
 
   state = {
-    sortBy: 'geographically'
+    sortBy: 'alphabetically'
   }
 
   render() {
@@ -95,7 +95,7 @@ export default class BarChart extends Component {
           />
         </XYPlot>
         Try re-sorting the bar chart:&nbsp;
-        {['geographically', 'alphabetically', 'by ridership', 'by income'].map(v => {
+        {['alphabetically', 'geographically', 'by ridership', 'by income'].map(v => {
           return (<button
             key={v}
             onClick={() => this.setState({sortBy: v})}

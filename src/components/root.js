@@ -15,7 +15,7 @@ the Red Line changed over time?
 `;
 
 const bar1P = `
-Consider the bar chart below, where the bars are arranged vertically in geographical order (north to south),
+Consider the bar chart below, where the bars are arranged vertically in alphabetical order,
 and the bars are color-coded by household median income — light yellow for high incomes, and dark blue
 for low incomes:`;
 
@@ -60,17 +60,23 @@ that the relationship between income and ridership is positive — i.e., as inco
 ridership.
 `;
 
-const scatter2P = `
-The second scatterplot further explores the relationship between time and ridership. The scatterplot shows total line
-ridership from 2001 to 2018. Each blue point on the scatterplot shows the date and ridership. The red points show the
-average ridership of the year. From this view, we can see that ridership steadily increased from 2001 until 2013, where
-we saw a solid dip in data because of line closures from construction. Since 2015, ridership has been declining. Although
-we are unsure of the exact reason why, it could be due to rideshare services like Uber and Lyft expanding. In 2014, both
-Uber and Lyft increased funding (Series E funding) and continued their expansion throughout the US and internationally.
-In the second view, we show ridership values that are normalized (the mean is substracted from the value). From this view,
-we see that there is greater variance as the years go on, which could probably also speak to the general trend of ridership
-decreasing past 2015.
+const scatter2_1P = `
+Let us consider another scatterplot, with time (from 2001 to 2018) on the x-axis and ridership on the y-axis.
+The blue points represent total monthly ridership, while the red line graph represents average annual
+ridership. Hover over the points to see the time and the exact ridership:
 `;
+
+const scatter2_2P=`
+We can see that ridership steadily increased from 2001 until 2013, where we saw a solid dip
+because of station closures from construction. Ridership increased again from 2013 to 2016. However, since 2015,
+ridership has been declining, which the CTA has blamed on several factors, including low gas prices, telecommuting, and the advent of
+ride-sharing services such as Uber and Lyft.`;
+
+const scatter2_3P=`
+Toggle the view of the scatterplot to "Value-Mean", and view the scatterplot with ridership values
+normalized relative to average annual ridership. Note the increased variance in monthly ridership
+as the years go on. Which months tend to have higher ridership than the annual average, and
+which months tend to have below-average ridership? Try highlighting the month of "October".`;
 
 const treemapP = `
 this is a paragraph about the treemap.
@@ -130,11 +136,13 @@ class RootComponent extends React.Component {
         <div className = "text">{scatter1_1P}</div>
         <IncomeScatter data={generalData}/>
         <div className = "text">{scatter1_2P}</div><hr />
-        <div className = "text">{phaseP}</div>
-        <PhaseChart data={tempData}/>
-        <div className = "text">{scatter2P}</div>
+        <div className = "text">{scatter2_1P}</div>
         <MonthlyScatter data={{annData: annualData, monData: monthlyData}}/>
         <MonthlyLegend/>
+        <div className = "text">{scatter2_2P}</div>
+        <div className = "text">{scatter2_3P}</div><hr />
+        <div className = "text">{phaseP}</div>
+        <PhaseChart data={tempData}/>
         <div className = "text">{treemapP}</div>
         <div className = "text">{concP}</div>
       </div>

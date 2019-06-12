@@ -96,7 +96,7 @@ export default class MonthlyScatter extends Component {
 
     return (
       <div>
-        Show monthly data as:&nbsp;
+        Try showing monthly data as:&nbsp;
         {['Value', 'Value-Mean'].map(v => {
           return (<button
           key={v}
@@ -107,7 +107,7 @@ export default class MonthlyScatter extends Component {
           options={months}
           closeMenuOnSelect
           isClearable
-          placeholder="Highlight a month"
+          placeholder="Try highlighting a month"
           onChange={d => this.setState({filterBy: d ? d.value : null})}/>
         <XYPlot width={1000} height={500} margin={{left: 90, right: 10, top: 10, bottom: 50}} xType="time">
           <VerticalGridLines />
