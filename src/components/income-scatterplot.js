@@ -28,8 +28,8 @@ export default class IncomeScatter extends Component {
       trendBy: 'No Trendline',
       trendline: {
         'No Trendline': [],
-        'Trendline with y-intercept': trendLine,
-        'Trendline with 0 y-intercept': trendlineIntercept
+        'Linear': trendLine,
+        'Linear with forced 0 y-intercept': trendlineIntercept
       }
     };
   }
@@ -106,8 +106,8 @@ export default class IncomeScatter extends Component {
           }
         </XYPlot>
         Add trendline:&nbsp;
-        {['Trendline with y-intercept',
-          'Trendline with 0 y-intercept'].map(v => {
+        {['Linear',
+          'Linear with forced 0 y-intercept'].map(v => {
             return (<button
               key={v}
               onClick={() => this.setState({trendBy: v})}
