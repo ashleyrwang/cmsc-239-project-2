@@ -87,8 +87,8 @@ consider this treemap of relative ridership at the Red Line stations over four y
 
 const treemap2P = `
 Try selecting different years to see how relative ridership at each station has changed over the
-course of 15 years. Notably, the relative ridership at 95th/Dan Ryan has increased from
-4.71% in 2001 to 7.12% in 2016.
+course of 15 years. Notably, the relative ridership at 95th/Dan Ryan has decreased from
+7.12% in 2001 to 4.71% in 2016.
 `;
 
 const concP = `
@@ -99,9 +99,10 @@ The median income may not only indicate how affordable the Red Line is for resid
 but it may also indicate how popular the station is as an origin and a destination for visitors.
 Red Line ridership has also changed
 over the years, with particular events such as the 2013 Reconstruction Project having a significant impact.
-Furthermore, within each day of the week, there is little variance in ridership; yet, there are significant differences across
-days of the week. At the station level, ridership has changed as well. Although some stations have been fairly consistant 
-with ridership representation, some stations like 95th/Dan Ryan have experienced a dramatic increase (+50%) people swiping in.
+At the station level, ridership has changed as well. Although some stations have had fairly consistent 
+relative ridership, some stations like 95th/Dan Ryan have experienced a dramatic decrease (-34%) people swiping in.
+Finally, within each day of the week, there is little variance in ridership; yet, there are significant differences across
+days of the week. 
 These trends of where people get on, and the reasons why, are definitely important to consider as we consider 
 how we want to develop and advance the Chicago public transit system.
 `;
