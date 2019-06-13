@@ -9,8 +9,8 @@ import {
   HorizontalGridLines,
   MarkSeries,
   DiscreteColorLegend,
-  LineSeries,
   ChartLabel,
+  LineMarkSeries,
   Hint
 } from 'react-vis';
 
@@ -93,6 +93,7 @@ export default class MonthlyScatter extends Component {
 
     const month = formattedMonthlyData[valBy];
     const annual = formattedAnnualData[valBy];
+    console.log(value);
 
     return (
       <div>
@@ -135,6 +136,21 @@ export default class MonthlyScatter extends Component {
               textAnchor: 'end'
             }}
           />
+          <LineMarkSeries
+            animation
+            colorType="literal"
+            onValueMouseOver={(v, {index}) => {
+              this.setState({hoverPointId: index, value: v});
+            }}
+            onValueMouseOut={v => this.setState({value: false})}
+            size={7}
+            data={annual}
+            lineStyle={{stroke: '#C0392B'}}
+            getColor={(val) => {
+              return (val.dateString === value.dateString && val.y === value.y) ?
+                '#fca097' : '#C0392B';
+            }}
+          />
           <MarkSeries
             animation
             colorType="literal"
@@ -150,30 +166,19 @@ export default class MonthlyScatter extends Component {
                 (filterBy === val.month) ? 'black' : '#1A5276';
             }}
           />
-          <LineSeries
-            animation
-            color="#C0392B"
-            data={annual}
-          />
-          <MarkSeries
-            animation
-            colorType="literal"
-            onValueMouseOver={(v, {index}) => {
-              this.setState({hoverPointId: index, value: v});
-            }}
-            onValueMouseOut={v => this.setState({value: false})}
-            size={7}
-            data={annual}
-            getColor={(val) => {
-              return (val.dateString === value.dateString && val.y === value.y) ?
-                '#fca097' : '#C0392B';
-            }}
+
+          <DiscreteColorLegend
+            style={{position: 'absolute', left: '100px', top: '25px'}}
+            orientation={'horizontal'}
+            items={[{title: 'Monthly Total', color: '#1A5276'}, {title: 'Yearly Average', color: '#C0392B'}]}
+            height={70}
           />
 
           {value !== false &&
             <Hint value={value}>
               <div >
-                {value.dateString}<br />Riders: {value.y}
+                {value.dateString}<br />
+                {value.dateString.length > 4 ? 'Riders: ' : 'Avg: '} {value.y}
               </div>
             </Hint>
           }
