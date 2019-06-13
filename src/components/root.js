@@ -100,7 +100,10 @@ but it may also indicate how popular the station is as an origin and a destinati
 Red Line ridership has also changed
 over the years, with particular events such as the 2013 Reconstruction Project having a significant impact.
 Furthermore, within each day of the week, there is little variance in ridership; yet, there are significant differences across
-days of the week. [something about the treemap].
+days of the week. At the station level, ridership has changed as well. Although some stations have been fairly consistant 
+with ridership representation, some stations like 95th/Dan Ryan have experienced a dramatic increase (+50%) people swiping in.
+These trends of where people get on, and the reasons why, are definitely important to consider as we consider 
+how we want to develop and advance the Chicago public transit system.
 `;
 
 class RootComponent extends React.Component {
