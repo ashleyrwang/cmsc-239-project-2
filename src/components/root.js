@@ -12,14 +12,14 @@ const introP = `
 The CTA Red Line, also known as the Howard-Dan Ryan Line, is the busiest line on the L system. It
 had a total ridership of 73,606,207 in 2016, and spans over 20 miles, from Rogers Park in the North
 Side to Roseland in the South Side. The Red Line also runs 24 hours a day, making it the most well-travelled
-and available L line to take. What factors affect the ridership of the Red Line, and how has the ridership of
-the Red Line changed over time?
+and available L line in Chicago. What factors affect the ridership of the Red Line, and how has the 
+ridership of the Red Line changed over time?
 `;
 
 const bar1P = `
-Consider the bar chart below, where the bars are arranged vertically in alphabetical order,
-and the bars are color-coded by household median income — light yellow for high incomes, and dark blue
-for low incomes:`;
+Consider the bar chart below, where the bars are arranged vertically in alphabetical order.  
+Each bar is color-coded by the household median income of the surrounding zipcode. 
+Light yellow represents high incomes, and dark blue represents low incomes:`;
 
 const bar2P = `
 Sorting the bar graph geographically, we can see that based on ridership and income, the Red Line stations
@@ -48,8 +48,8 @@ than Saturdays, which in turn have lower ridership than weekdays.`;
 
 const scatter1_1P = `
 So let us consider a scatterplot instead, with median household income on the x-axis and average daily
-ridership on the y-axis. Hover over the points to see the station name, the exact income, and the
-exact ridership:
+ridership on the y-axis. Each point represents a Red Line station. Hover over the points to see the station 
+name, the exact income, and the exact ridership:
 `;
 
 const scatter1_2P = `
@@ -63,15 +63,15 @@ ridership.
 
 const scatter2_1P = `
 Let us consider another scatterplot, with time (from 2001 to 2018) on the x-axis and ridership on the y-axis.
-The blue points represent total monthly ridership, while the red line graph represents average annual
-ridership. Hover over the points to see the time and the exact ridership:
+The blue points represent total monthly ridership, while the red line graph shows average monthly ridership
+for each year. Hover over the points to see the time and the exact ridership:
 `;
 
 const scatter2_2P=`
-We can see that ridership steadily increased from 2001 until 2013, where we saw a solid dip
-because of station closures from construction. Ridership increased again from 2013 to 2016. However, since 2015,
-ridership has been declining, which the CTA has blamed on several factors, including low gas prices, telecommuting, and the advent of
-ride-sharing services such as Uber and Lyft.`;
+We can see that ridership steadily increased from 2001 until 2013, where we see a solid dip
+due to station closures from construction. Ridership increased again from 2013 to 2016. However, since 2015,
+ridership has been declining, which the CTA has blamed on several factors, including low gas prices, 
+telecommuting, and the advent of ride-sharing services such as Uber and Lyft.`;
 
 const scatter2_3P=`
 Toggle the view of the scatterplot to "Value-Mean", and view the scatterplot with ridership values
