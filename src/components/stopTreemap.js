@@ -21,8 +21,8 @@ function _formatData(data) {
   });
   return {
     title: 'Station Treemap',
-    color: 1,
-    children: leaves
+    children: leaves,
+    color: 1
   };
 }
 
