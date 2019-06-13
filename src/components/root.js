@@ -162,7 +162,6 @@ class RootComponent extends React.Component {
         <div className = "text">{scatter1_2P}</div><hr />
         <div className = "text">{scatter2_1P}</div>
         <MonthlyScatter data={{annData: annualData, monData: monthlyData}}/>
-        <MonthlyLegend/>
         <div className = "text">{scatter2_2P}</div>
         <div className = "text">{scatter2_3P}</div><hr />
         <div className = "text">{treemap1P}</div>
