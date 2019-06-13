@@ -168,7 +168,7 @@ class RootComponent extends React.Component {
         <div className = "text">{scatter2_2P}</div>
         <div className = "text">{scatter2_3P}</div><hr />
         <div className = "text">{treemap1P}</div>
-        <StopTree dataList={[general16, general11, general06, general01]}/>
+        <StopTree dataList={[general01, general06, general11, general16]}/>
         <div className = "text">{treemap2P}</div> <hr />
         <div className = "text">{phase1P}</div>
         <PhaseChart data={tempData}/>
