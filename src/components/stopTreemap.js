@@ -29,13 +29,13 @@ function _formatData(data) {
 function _indexToYear(index) {
   switch (index) {
   case 0:
-    return 2016;
-  case 1:
-    return 2011;
-  case 2:
-    return 2006;
-  case 3:
     return 2001;
+  case 1:
+    return 2006;
+  case 2:
+    return 2011;
+  case 3:
+    return 2016;
   default:
     return undefined;
   }
@@ -45,7 +45,7 @@ export default class StopTree extends Component {
   constructor() {
     super();
     this.state = {
-      dataIndex: 0,
+      dataIndex: 3,
       selectedValue: false
     };
   }
@@ -60,6 +60,13 @@ export default class StopTree extends Component {
         <h3>
         Relative Ridership By Station:&nbsp;{_indexToYear(dataIndex)} <br />
         </h3>
+        Select Year:&nbsp;
+          {['2001', '2006', '2011', '2016'].map(v => {
+            return (<button
+              key={v}
+              onClick={() => this.setState({dataIndex: ['2001', '2006', '2011', '2016'].indexOf(v)})}
+              >{v}</button>);
+          })} <br /> <br />
         <Treemap
           height={500}
           width={1000}
@@ -71,32 +78,7 @@ export default class StopTree extends Component {
           getLabel={x => x.name}
           onLeafMouseOver={(node) => this.setState({selectedValue: node})}
           onLeafMouseOut={() => this.setState({selectedValue: false})}
-        >
-          {selectedValue !== false &&
-            <Hint value={{x: 0, y: 0}}>
-                HI
-            </Hint>
-          }
-          {
-            selectedValue !== false &&
-            <Hint value={selectedValue}>
-              <div>
-                <h1>HENLO</h1>
-              </div>
-            </Hint>
-          }
-        </Treemap>
-        {
-          <div>
-          Select Year:&nbsp;
-            {['2016', '2011', '2006', '2001'].map(v => {
-              return (<button
-                key={v}
-                onClick={() => this.setState({dataIndex: ['2016', '2011', '2006', '2001'].indexOf(v)})}
-                >{v}</button>);
-            })} <br />
-          </div>
-          } <br />
+        />
       </div>
     );
   }
