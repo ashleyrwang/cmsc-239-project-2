@@ -79,8 +79,16 @@ normalized relative to average annual ridership. Note the increased variance in 
 as the years go on. Which months tend to have higher ridership than the annual average, and
 which months tend to have below-average ridership? Try highlighting the month of "October".`;
 
-const treemapP = `
-this is a paragraph about the treemap.
+const treemap1P = `
+Continuing with our examination of the relationship between time and ridership,
+consider this treemap of relative ridership at the Red Line stations over four years: 2001, 2006,
+2011, and 2016:
+`;
+
+const treemap2P = `
+Try selecting different years to see how relative ridership at each station has changed over the
+course of 15 years. Notably, the relative ridership at 95th/Dan Ryan has increased from
+4.71% in 2001 to 7.12% in 2016.
 `;
 
 const concP = `
@@ -132,7 +140,7 @@ class RootComponent extends React.Component {
   }
 
   render() {
-    const {loading, generalData, monthlyData, annualData, tempData, 
+    const {loading, generalData, monthlyData, annualData, tempData,
       general16, general11, general06, general01} = this.state;
     if (loading) {
       return <h1>LOADING</h1>;
@@ -157,11 +165,12 @@ class RootComponent extends React.Component {
         <MonthlyLegend/>
         <div className = "text">{scatter2_2P}</div>
         <div className = "text">{scatter2_3P}</div><hr />
+        <div className = "text">{treemap1P}</div>
+        <StopTree dataList={[general16, general11, general06, general01]}/>
+        <div className = "text">{treemap2P}</div> <hr />
         <div className = "text">{phase1P}</div>
         <PhaseChart data={tempData}/>
         <div className = "text">{phase2P}</div><hr />
-        <StopTree dataList={[general16, general11, general06, general01]}/>
-        <div className = "text">{treemapP}</div> <hr />
         <div className = "text">{concP}</div>
       </div>
     );
