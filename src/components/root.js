@@ -155,7 +155,7 @@ class RootComponent extends React.Component {
         From Howard to 95th/Dan Ryan: <br />
         Ridership and Income Along the CTA'S Red Line
         </div>
-        <p>— by Christina Ford, Connor Hopcraft, and Ashley Wang</p>
+        <p>— by Ashley Wang, Christina Ford, and Connor Hopcraft</p>
         <div className = "text">{introP}</div> <hr />
         <div className = "text">{bar1P}</div>
         <BarChart data={generalData}/>
